@@ -11,3 +11,4 @@ Provides a user-friendly interface and a USSD flow that mimicks a real USSD sess
 - Go into folder and run `ussd-mocker.exe` (Windows) or `ussd-mocker.sh` (Unix). This will start the local server in a terminal or command line. Leave this window open.
 - Open [http://localhost:8773](http://localhost:8773) in your browser.
 - Enjoy!
+- [Demo](https://ussd-mocker.onrender.com)
