@@ -1,18 +1,18 @@
-$('#initiateForm').validate({
+$("#initiateForm").validate({
   rules: {
     Url: {
-      required: true
+      required: true,
     },
     Mobile: {
-      digits: true
-    }
-  }
+      digits: true,
+    },
+  },
 });
 
-$('#responseForm').validate({
+$("#responseForm").validate({
   rules: {
     UserInput: {
-      required: true
-    }
-  }
-})
+      required: true,
+    },
+  },
+});
