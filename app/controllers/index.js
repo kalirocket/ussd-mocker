@@ -1,6 +1,7 @@
 import randomstring from "randomstring";
 import Validr from "validr";
 import request from "superagent";
+import { joinUrl } from "../../uitls/functions.js";
 
 export default {
   index,
@@ -11,10 +12,16 @@ export default {
   timeout,
 };
 
-async function index(req, res) {
+async function index(req, res, app) {
   res.clearCookie("session");
+
+  const fallbackUrl =
+    app.get("env") === "production"
+      ? joinUrl(app.get("domain").origin, "/test")
+      : joinUrl(`${app.get("domain").origin}:${app.get("port")}`, "/test");
+
   res.render("index", {
-    ClientUrl: req.cookies.ClientUrl || "http://127.0.0.1:8773/test",
+    ClientUrl: req.cookies.ClientUrl || fallbackUrl,
     ServiceCode: req.cookies.ServiceCode || "",
     Mobile: req.cookies.Mobile || "",
     Operator: req.cookies.Operator || "",
@@ -126,19 +133,6 @@ async function timeout(req, res, next) {
 function validateInitiate(body) {
   const validr = new Validr(body);
   validr.validate("Url", "URL must be valid.").isLength(1).isURL();
-  return validr.validationErrors(true);
-}
-
-function validateResponse(body) {
-  const validr = new Validr(body);
-  validr.validate("UserInput", "User input must be valid number").isLength(1).isNumeric();
-  return validr.validationErrors(true);
-}
-
-function validateUssdResponse(body) {
-  const validr = new Validr(body);
-  validr.validate("Type", "Type is required.").isLength(1);
-  validr.validate("Message", "Message is required.").isLength(1);
   return validr.validationErrors(true);
 }
 
