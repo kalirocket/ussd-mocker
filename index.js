@@ -9,26 +9,27 @@ dotenv.config();
 const app = express();
 
 const PORT = process.env.PORT || 8773;
-const DOMAIN = process.env.DOMAIN || "127.0.0.1";
 
 app.set("view engine", "pug");
-app.set("views", "app/views"); // Keep this if needed
+app.set("views", "app/views");
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-route(app); // Ensure `route.js` uses ESM
+route(app);
 
 app.use(express.static("public"));
 
-app.listen(PORT, DOMAIN, () => {
+const isProduction = process.env.NODE_ENV === "production";
+
+app.listen(PORT, () => {
+  const url = isProduction ? `Running on port ${PORT}` : `http://localhost:${PORT}`;
   console.log(
     util.format(
-      "\nPoint your browser to http://%s:%d to start using SMSGH USSD Mocker.\n" +
+      "\nPoint your browser to %s to start using SMSGH USSD Mocker.\n" +
         "NOTE: Closing this window will stop the web application's server.",
-      DOMAIN,
-      PORT
+      url
     )
   );
 });
